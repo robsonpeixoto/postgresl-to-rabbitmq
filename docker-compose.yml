@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:15.1-alpine
+    command:
+      [
+        # enable logical replication
+        "-c", "wal_level=logical",
+        # configure a very verbose log
+        "-c", "log_statement=all",
+        "-c", "log_line_prefix=%m p:%p c:%c l:%l v:%v x:%x "
+      ]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  rabbitmq:
+    image: rabbitmq:3.11.5-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
